@@ -41,10 +41,24 @@ tempCtx.drawImage(results.segmentationMask, 0, 0, tempCanvas.width, tempCanvas.h
 tempCtx.globalCompositeOperation = 'source-over';
 
 
+
+// 创建一个临时的离屏 Canvas
+const flippedCanvas = document.createElement("canvas");
+flippedCanvas.width = tempCanvas.width;
+flippedCanvas.height = tempCanvas.height;
+const flippedCtx = flippedCanvas.getContext("2d");
+
+// 水平翻转 tempCanvas 并绘制到 flippedCanvas
+flippedCtx.save();
+flippedCtx.scale(-1, 1);
+flippedCtx.drawImage(tempCanvas, -tempCanvas.width, 0);
+flippedCtx.restore();
+
 outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
 outputCtx.drawImage(background_picture, 0, 0, outputCanvas.width, outputCanvas.height);
 
-outputCtx.drawImage(tempCanvas, 0, 0);
+
+outputCtx.drawImage(flippedCanvas, 0, 0);
 
         }
 
