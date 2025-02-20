@@ -67,4 +67,10 @@ body {
   .main_canvas {
     width: 100%;
   }
+  .pc{
+    display: none;
+  }
+  .phone{
+    display: block;
+  }
 }
