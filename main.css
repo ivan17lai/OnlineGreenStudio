@@ -54,12 +54,12 @@ body {
     height: auto;
 }
 
-@media (max-width: 768px) {
+@media (pointer: coarse) {
   body {
     display: flex;
     flex-direction: column-reverse;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
   }
   .left_bar {
     width: 100%;
