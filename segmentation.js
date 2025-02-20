@@ -18,7 +18,7 @@ const videoElement = document.getElementById('videoElement');
             return `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/${file}`;
         }});
 
-        selfieSegmentation.setOptions({ modelSelection: 1 });
+        selfieSegmentation.setOptions({ modelSelection: 0 });
         selfieSegmentation.onResults(onResults);
 
         async function processFrame() {
