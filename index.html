@@ -11,10 +11,11 @@
 
 <body>
     <div class="left_bar">
-        <video id="videoElement" autoplay playsinline></video>
-        <input type="file" id="background_update" accept="image/*" multiple>
-        <h class="pc">windoes</h>
-        <h class="phone" style="display: none;">phone</h>
+        <video id="videoElement" autoplay playsinline style="display: none;"></video>
+        <input type="file" id="background_update" accept="image/*" multiple style="display: none;">
+        <button class="button_add_image">
+            <span class="icon">+</span>
+        </button>
         <canvas id="background_picture" style="display: none;"></canvas>
         <div class="pictures">
 
@@ -28,6 +29,14 @@
 
     <script src="segmentation.js"></script>
     <script src="background.js"></script>
+    <script>
+        const add_button = document.querySelector('.button_add_image');
+        const input_vutton = document.querySelector('#background_update');
+        
+        add_button.addEventListener('click', () => {
+            input_vutton.click();
+        });
+    </script>
 
 
 </body>
