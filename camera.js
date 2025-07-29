@@ -28,19 +28,44 @@ function onResults(results) {
     tempCanvas.height = height;
     const tempCtx = tempCanvas.getContext("2d");
 
+    // 將人像遮罩繪製到 tempCanvas
     tempCtx.drawImage(results.image, 0, 0, width, height);
     tempCtx.globalCompositeOperation = "destination-in";
     tempCtx.drawImage(results.segmentationMask, 0, 0, width, height);
     tempCtx.globalCompositeOperation = "source-over";
 
+    // 清空畫布
     ctx.clearRect(0, 0, width, height);
+
+    // 繪製背景（保持比例並裁切）
     if (selectedImgElement) {
-        ctx.drawImage(selectedImgElement, 0, 0, width, height);
+        const img = selectedImgElement;
+        const imgAspect = img.width / img.height;
+        const canvasAspect = width / height;
+
+        let sx, sy, sWidth, sHeight;
+
+        if (imgAspect > canvasAspect) {
+            // 圖片太寬，要裁左右
+            sHeight = img.height;
+            sWidth = sHeight * canvasAspect;
+            sx = (img.width - sWidth) / 2;
+            sy = 0;
+        } else {
+            // 圖片太高，要裁上下
+            sWidth = img.width;
+            sHeight = sWidth / canvasAspect;
+            sx = 0;
+            sy = (img.height - sHeight) / 2;
+        }
+
+        ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, width, height);
     } else {
         ctx.fillStyle = "gray";
         ctx.fillRect(0, 0, width, height);
     }
 
+    // 將人像覆蓋在背景上
     ctx.drawImage(tempCanvas, 0, 0, width, height);
 }
 
