@@ -1,4 +1,5 @@
 let timerEnabled = false;
+let isCountingDown = false; // ➕ 防止倒數重複觸發
 
 const timerButton = document.getElementById('timerButton');
 const shotButton = document.getElementById('shotButton');
@@ -7,17 +8,16 @@ const timerIcon = timerButton.querySelector('span.material-icons');
 // 切換 timer 狀態
 timerButton.addEventListener('click', () => {
     timerEnabled = !timerEnabled;
-
-    // 切換背景顏色
     timerButton.style.backgroundColor = timerEnabled ? '#A2FFA0' : '#f2f2f2';
-
-    // 切換圖示
     timerIcon.textContent = timerEnabled ? 'timer_3_select' : 'timer_off';
 });
 
 // 快門按鈕點擊處理
 shotButton.addEventListener('click', () => {
+    if (isCountingDown) return; // 🛑 正在倒數中就不處理
+
     if (timerEnabled) {
+        isCountingDown = true;
         let countdown = 3;
         shotButton.textContent = countdown;
 
@@ -27,12 +27,13 @@ shotButton.addEventListener('click', () => {
                 shotButton.textContent = countdown;
             } else {
                 clearInterval(interval);
-                shotButton.textContent = ''; // ✅ 倒數完清除文字
+                shotButton.textContent = ''; // ✅ 清除文字
+                isCountingDown = false;
                 doAction();
             }
         }, 1000);
     } else {
-        doAction(); // 不改變文字
+        doAction();
     }
 });
 
@@ -52,15 +53,11 @@ function doAction() {
     // 複製 outputCanvas 的內容到 shotedCanvas
     shotedCtx.drawImage(outputCanvas, 0, 0);
 
-    // 交換顯示
+    // 顯示控制項切換
     outputCanvas.style.display = 'none';
     shotedCanvas.style.display = 'flex';
-
-    // 顯示下載按鈕
     shotButton.style.display = 'none';
     downloadButton.style.display = 'flex';
-
-    // 顯示 noneButton，隱藏 reButton
     noneButton.style.display = 'none';
     reButton.style.display = 'flex';
 
@@ -76,19 +73,13 @@ reButton.addEventListener('click', () => {
     const noneButton = document.getElementById('noneButton');
     const reButton = document.getElementById('reButton');
 
-    // 顯示 outputCanvas，隱藏 shotedCanvas
     outputCanvas.style.display = 'flex';
     shotedCanvas.style.display = 'none';
-
-    // 顯示快門按鈕，隱藏下載按鈕
     shotButton.style.display = 'flex';
     downloadButton.style.display = 'none';
-
-    // 顯示 noneButton，隱藏 reButton
     noneButton.style.display = 'flex';
     reButton.style.display = 'none';
 
-    // 清除 shotedCanvas 內容
     const shotedCtx = shotedCanvas.getContext('2d');
     shotedCtx.clearRect(0, 0, shotedCanvas.width, shotedCanvas.height);
 
