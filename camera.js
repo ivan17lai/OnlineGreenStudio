@@ -6,6 +6,8 @@ const ctx = canvas.getContext('2d');
 let currentStream = null;
 let selectedImgElement = null;
 
+
+
 const selfieSegmentation = new SelfieSegmentation({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/${file}`,
 });
@@ -18,6 +20,8 @@ async function drawToCanvas() {
     }
     requestAnimationFrame(drawToCanvas);
 }
+
+
 
 function onResults(results) {
     const width = canvas.width;
@@ -120,10 +124,25 @@ function setSelectedBackground(url) {
 }
 
 async function init() {
-    await getCameras();
-    if (cameraSelect.options.length > 0) {
-        startCamera(cameraSelect.value);
+    try {
+        // 嘗試先請求權限，確認使用者有授權
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop()); // 先停止，不直接使用這個 stream
+
+        // 如果成功，載入攝影機清單
+        await getCameras();
+
+        if (cameraSelect.options.length > 0) {
+            startCamera(cameraSelect.value);
+        } else {
+            alert("找不到任何攝影機裝置，請確認已連接並允許使用。");
+        }
+
+    } catch (error) {
+        console.error("無法存取攝影機權限：", error);
+        alert("請允許攝影機權限，否則無法啟動。請至瀏覽器設定中允許攝影機權限。");
     }
 }
+
 
 init();
