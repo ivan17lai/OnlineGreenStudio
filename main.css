@@ -45,7 +45,7 @@ body {
   box-sizing: border-box;
 }
 
-#outputCanvas {
+.cameraCanvas {
   height: 100%;
   aspect-ratio: 4 / 3;
   width: auto;
@@ -121,3 +121,43 @@ body {
   flex-direction: column;
   scroll-snap-align: start;
 }
+
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 90%;
+  height: 100px;
+  margin-top: 30px;
+  border-radius: 35px;
+  background-color: #ffffff;
+}
+
+.toolbar-shotButton {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #d5d5d5;
+  border: rgb(235, 235, 235) 5px solid;
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar-Button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e7e7e7;
+  border:none;
+  margin: 20px;display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

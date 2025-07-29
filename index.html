@@ -36,8 +36,26 @@
             </div>
 
         </div>
-        
 
+        <div class="toolbar">
+            <button id="timerButton" class="toolbar-Button">
+                <span class="material-icons" style="font-size:18px;cursor:pointer;">timer_off</span>
+            </button>
+            <button id="shotButton" class="toolbar-shotButton" style="display: flex;">
+                
+            </button>
+            <button id="downloadButton" class="toolbar-shotButton" style="display: none;">
+                <span class="material-icons" style="font-size:18px;cursor:pointer;">download</span>
+            </button>
+            
+            <button id="noneButton" class="toolbar-Button" style="visibility: hidden; display: flex;"></button>
+            </button>
+
+            <button id="reButton" class="toolbar-Button" style="display: none;">
+                <span id="reButtonIcon" class="material-icons" style="display: none; font-size:18px;cursor:pointer;">refresh</span>
+            </button>
+        </div>
+        
 
 
         
@@ -46,11 +64,14 @@
 
     <div class="main_canvas">
         <select id="cameraSelect"></select>
-        <canvas id="outputCanvas"></canvas>
+        <canvas class="cameraCanvas" id="outputCanvas" style="display: flex;"></canvas>
+        <canvas class="cameraCanvas" id="shotedCanvas" style="display: none;"></canvas>
+
     </div>
 
     <script src="upload.js"></script>
     <script src="camera.js"></script>
+    <script src="shot.js"></script>
 
 </body>
 </html>
