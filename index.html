@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Green Studio</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/selfie_segmentation.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="./main.css">
 
@@ -15,20 +16,29 @@
     <video id="videoInput" autoplay playsinline style="display: none;"></video>
 
     <div class="left_bar">
-        <h1>Online Green Studio</h1>
 
-        <h3>
+        <h1>Online Green Studio</h1>
+ 
+        <!-- <h3>
             新增背景圖片 <span id="uploadCount">(已上傳 0 張)</span>
-        </h3>
+        </h3> -->
 
 
         <div class="image-scroll-container">
             <input type="file" id="fileInput" accept="image/*" multiple style="display: none" />
             <div class="image-strip" id="imageStrip">
-                <div class="thumbnail add-button" id="addButton">+</div>
+                <div class="thumbnail add-button" id="addButton">
+                    <span class="material-icons" style="font-size:26px;cursor:pointer;">add_photo_alternate</span>
+                    增加背景圖片<br>
+                    <div id="uploadCount">(已上傳 0 張)</div>
+                </div>
                 <!-- <img class="thumbnail" src="./onlinegreenBackground.png"> -->
             </div>
+
         </div>
+        
+
+
 
         
 

@@ -12,10 +12,26 @@ body {
   flex: 1;
   height: 100vh;
   padding-top: 20px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 35px;
+  padding-right: 0px;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
+}
+.left_bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(to left, #e9e9e9 10%, transparent 100%);
+}
+
+.left_bar h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
 .main_canvas {
@@ -68,6 +84,8 @@ body {
   box-sizing: border-box;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;    
 }
 .image-scroll-container::-webkit-scrollbar {
   display: none;
@@ -81,20 +99,25 @@ body {
 }
 
 .thumbnail {
-  width: 240px;
-  height: 180px;
+  width: 280px;
+  height: 210px;
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
   flex-shrink: 0;
+  scroll-snap-align: start;
 }
 
 .add-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
+  font-size: 12px;
+  font-weight: semibold;
   color: #aaa;
   background-color: #f9f9f9;
   border: 2px dashed #ccc;
+  text-align: center;
+  flex-direction: column;
+  scroll-snap-align: start;
 }
