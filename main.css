@@ -127,12 +127,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   width: 90%;
   height: 100px;
   margin-top: 30px;
   border-radius: 35px;
   background-color: #ffffff;
+}
+
+.toolbar-cameraControl{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  width: 85%;
+  margin: 20px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
 }
 
 .toolbar-shotButton {
