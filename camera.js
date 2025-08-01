@@ -4,9 +4,8 @@ const cameraSelect = document.getElementById('cameraSelect');
 const ctx = canvas.getContext('2d');
 
 let currentStream = null;
-let selectedImgElement = null;
-
-
+let selectedBackgroundImgElement = null;
+let selectedForegroundImgElement = null; // 新增前景圖片變數
 
 const selfieSegmentation = new SelfieSegmentation({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/${file}`,
@@ -21,29 +20,16 @@ async function drawToCanvas() {
     requestAnimationFrame(drawToCanvas);
 }
 
-
-
 function onResults(results) {
     const width = canvas.width;
     const height = canvas.height;
 
-    const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = width;
-    tempCanvas.height = height;
-    const tempCtx = tempCanvas.getContext("2d");
-
-    // 將人像遮罩繪製到 tempCanvas
-    tempCtx.drawImage(results.image, 0, 0, width, height);
-    tempCtx.globalCompositeOperation = "destination-in";
-    tempCtx.drawImage(results.segmentationMask, 0, 0, width, height);
-    tempCtx.globalCompositeOperation = "source-over";
-
     // 清空畫布
     ctx.clearRect(0, 0, width, height);
 
-    // 繪製背景（保持比例並裁切）
-    if (selectedImgElement) {
-        const img = selectedImgElement;
+    // 1. 繪製背景（最底層）
+    if (selectedBackgroundImgElement) { // 如果有選擇背景圖片
+        const img = selectedBackgroundImgElement;
         const imgAspect = img.width / img.height;
         const canvasAspect = width / height;
 
@@ -65,12 +51,32 @@ function onResults(results) {
 
         ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, width, height);
     } else {
+        // 如果沒有選擇背景圖片，則填充灰色背景
         ctx.fillStyle = "gray";
         ctx.fillRect(0, 0, width, height);
     }
 
-    // 將人像覆蓋在背景上
+    // 2. 繪製人物（中間層）
+    // 建立一個臨時畫布來處理人像遮罩
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = width;
+    tempCanvas.height = height;
+    const tempCtx = tempCanvas.getContext("2d");
+    
+    tempCtx.drawImage(results.image, 0, 0, width, height);
+    tempCtx.globalCompositeOperation = "destination-in";
+    tempCtx.drawImage(results.segmentationMask, 0, 0, width, height);
+    tempCtx.globalCompositeOperation = "source-over";
+
     ctx.drawImage(tempCanvas, 0, 0, width, height);
+
+    // 3. 繪製前景（最上層，**不進行遮罩**）
+    if (selectedForegroundImgElement) {
+        const foregroundImg = selectedForegroundImgElement;
+        
+        // 繪製前景圖片到主畫布上，不使用任何遮罩
+        ctx.drawImage(foregroundImg, 0, 0, width, height);
+    }
 }
 
 async function startCamera(deviceId) {
@@ -114,12 +120,21 @@ cameraSelect.addEventListener('change', () => {
 });
 
 function setSelectedBackground(url) {
-    selectedImage = url;
-    selectedImgElement = new Image();
-    selectedImgElement.crossOrigin = "anonymous";
-    selectedImgElement.src = url;
-    selectedImgElement.onload = () => {
+    selectedBackgroundImgElement = new Image();
+    selectedBackgroundImgElement.crossOrigin = "anonymous";
+    selectedBackgroundImgElement.src = url;
+    selectedBackgroundImgElement.onload = () => {
         console.log("背景圖片載入完成");
+    };
+}
+
+// 新增設置前景圖片的函數
+function setSelectedForeground(url) {
+    selectedForegroundImgElement = new Image();
+    selectedForegroundImgElement.crossOrigin = "anonymous";
+    selectedForegroundImgElement.src = url;
+    selectedForegroundImgElement.onload = () => {
+        console.log("前景圖片載入完成");
     };
 }
 
@@ -143,6 +158,5 @@ async function init() {
         alert("請允許攝影機權限，否則無法啟動。請至瀏覽器設定中允許攝影機權限。");
     }
 }
-
 
 init();

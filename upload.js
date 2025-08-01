@@ -8,7 +8,6 @@ let selectedImage = null;
 let lastActive = null;
 let debounceTimer = null;
 
-// 處理點擊圖片
 function handleImageClick(imgElement, src) {
   console.log('選擇的圖片:', src);
   selectedImage = imgElement;
@@ -25,12 +24,10 @@ function handleImageClick(imgElement, src) {
   }
 }
 
-// 點擊「新增圖片」按鈕 ➜ 開啟檔案選擇器
 addButton.addEventListener('click', () => {
   fileInput.click();
 });
 
-// 上傳圖片處理
 fileInput.addEventListener('change', (event) => {
   const files = Array.from(event.target.files);
 
@@ -60,13 +57,11 @@ fileInput.addEventListener('change', (event) => {
   fileInput.value = '';
 });
 
-// 更新上傳數量
 function updateUploadCount() {
   const thumbnails = imageStrip.querySelectorAll('img.thumbnail');
   uploadCount.textContent = `(已上傳 ${thumbnails.length} 張)`;
 }
 
-// 滑動時自動觸發靠左圖片的 click
 container.addEventListener('scroll', () => {
   if (debounceTimer) clearTimeout(debounceTimer);
 
@@ -89,7 +84,7 @@ container.addEventListener('scroll', () => {
     if (closest && closest !== lastActive) {
       lastActive = closest;
       console.log('自動觸發點擊：', closest);
-      closest.click(); // 觸發使用者定義的邏輯
+      closest.click();
     }
   }, 100);
 });
