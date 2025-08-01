@@ -47,7 +47,7 @@ body {
 
 .cameraCanvas {
   height: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4/3;
   width: auto;
   border-radius: 40px;
   background-color: black;
@@ -85,7 +85,8 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;    
+  scroll-behavior: smooth;   
+  margin-bottom: 30px; 
 }
 .image-scroll-container::-webkit-scrollbar {
   display: none;
