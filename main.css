@@ -94,7 +94,7 @@ body {
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;   
-  margin-bottom: 30px; 
+  margin-bottom: 15px; 
 }
 .image-scroll-container::-webkit-scrollbar {
   display: none;
@@ -111,7 +111,7 @@ body {
   width: 210px;
   height: 157.5px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 20px;
   cursor: pointer;
   flex-shrink: 0;
   scroll-snap-align: start;
