@@ -53,6 +53,24 @@ function doAction() {
     // 複製 outputCanvas 的內容到 shotedCanvas
     shotedCtx.drawImage(outputCanvas, 0, 0);
 
+    // 繪製貼紙
+    const stickerContainer = document.getElementById('sticker-container');
+    const stickerWrappers = stickerContainer.querySelectorAll('.sticker-wrapper');
+    const outputCanvasRect = outputCanvas.getBoundingClientRect();
+
+    stickerWrappers.forEach(stickerWrapper => {
+        const stickerImg = stickerWrapper.querySelector('.sticker');
+        const stickerRect = stickerWrapper.getBoundingClientRect();
+
+        // 計算貼紙相對於 outputCanvas 的位置和尺寸
+        const dx = (stickerRect.left - outputCanvasRect.left) / outputCanvasRect.width * shotedCanvas.width;
+        const dy = (stickerRect.top - outputCanvasRect.top) / outputCanvasRect.height * shotedCanvas.height;
+        const dWidth = stickerRect.width / outputCanvasRect.width * shotedCanvas.width;
+        const dHeight = stickerRect.height / outputCanvasRect.height * shotedCanvas.height;
+
+        shotedCtx.drawImage(stickerImg, dx, dy, dWidth, dHeight);
+    });
+
     // 顯示控制項切換
     outputCanvas.style.display = 'none';
     shotedCanvas.style.display = 'flex';
@@ -60,6 +78,11 @@ function doAction() {
     downloadButton.style.display = 'flex';
     noneButton.style.display = 'none';
     reButton.style.display = 'flex';
+
+    // 禁用貼紙互動
+    stickerContainer.classList.add('disabled-interactions');
+    stickerFileInput.disabled = true;
+    addStickerButton.disabled = true;
 
     console.log("✅ 拍攝完成或執行動作");
 }
@@ -82,6 +105,11 @@ reButton.addEventListener('click', () => {
 
     const shotedCtx = shotedCanvas.getContext('2d');
     shotedCtx.clearRect(0, 0, shotedCanvas.width, shotedCanvas.height);
+
+    // 啟用貼紙互動
+    stickerContainer.classList.remove('disabled-interactions');
+    stickerFileInput.disabled = false;
+    addStickerButton.disabled = false;
 
     console.log("🔄 狀態已重設");
 });

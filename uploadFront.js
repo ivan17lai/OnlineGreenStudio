@@ -1,12 +1,33 @@
-const addButtonFront = document.getElementById('addForegroundButton');
+let selectedImageFront = null;
+let lastActiveFront = null;
+let debounceTimerFront = null;
+
+// Add default foreground image
+function addDefaultForegroundImage() {
+  const defaultSrc = './onlinegreen.png';
+  const img = document.createElement('img');
+  img.className = 'thumbnail';
+  img.src = defaultSrc;
+  img.id = 'defaultForeground'; // Add an ID to easily identify and remove it
+
+  img.addEventListener('click', () => {
+    handleImageClickFront(img, defaultSrc);
+  });
+
+  img.onload = () => {
+    imageStripFront.insertBefore(img, document.getElementById('addForegroundButton').nextSibling);
+    updateUploadCountFront();
+    handleImageClickFront(img, defaultSrc); // Select it by default
+  };
+}
+
+// Call on load
+addDefaultForegroundImage();
+
 const fileInputFront = document.getElementById('foregroundFileInput');
 const imageStripFront = document.getElementById('foregroundImageStrip');
 const uploadCountFront = document.getElementById('foregroundUploadCount');
 const containerFront = document.querySelector('.image-scroll-container');
-
-let selectedImageFront = null;
-let lastActiveFront = null;
-let debounceTimerFront = null;
 
 // 處理點擊圖片
 function handleImageClickFront(imgElementFront, srcFront) {
@@ -19,7 +40,7 @@ function handleImageClickFront(imgElementFront, srcFront) {
   });
   imgElementFront.classList.add('selected');
 
-  // 這裡假設設定前景圖片的函數是 setForegroundImage
+  // 這裡假設設定前景圖片的函數是 setSelectedForeground
   if (typeof setSelectedForeground === 'function') {
     setSelectedForeground(srcFront);
   } else {
@@ -28,13 +49,19 @@ function handleImageClickFront(imgElementFront, srcFront) {
 }
 
 // 點擊「新增圖片」按鈕 ➜ 開啟檔案選擇器
-addButtonFront.addEventListener('click', () => {
+document.getElementById('addForegroundButton').addEventListener('click', () => {
   fileInputFront.click();
 });
 
 // 上傳圖片處理
 fileInputFront.addEventListener('change', (event) => {
   const files = Array.from(event.target.files);
+
+  // Remove default image if new images are uploaded
+  const defaultFg = document.getElementById('defaultForeground');
+  if (defaultFg) {
+    defaultFg.remove();
+  }
 
   files.forEach(file => {
     if (file.type.startsWith('image/')) {
@@ -49,7 +76,7 @@ fileInputFront.addEventListener('change', (event) => {
       });
 
       imgFront.onload = () => {
-        imageStripFront.insertBefore(imgFront, addButtonFront.nextSibling);
+        imageStripFront.insertBefore(imgFront, document.getElementById('addForegroundButton').nextSibling);
         updateUploadCountFront();
       };
 
@@ -67,32 +94,3 @@ function updateUploadCountFront() {
   const thumbnailsFront = imageStripFront.querySelectorAll('img.thumbnail');
   uploadCountFront.textContent = `(已上傳 ${thumbnailsFront.length} 張)`;
 }
-
-// 滑動時自動觸發靠左圖片的 click
-containerFront.addEventListener('scroll', () => {
-  if (debounceTimerFront) clearTimeout(debounceTimerFront);
-
-  debounceTimerFront = setTimeout(() => {
-    const containerLeftFront = containerFront.scrollLeft;
-
-    // 只選擇當前 container 內的縮圖
-    const thumbnailsFront = containerFront.querySelectorAll('.thumbnail');
-    let closestFront = null;
-    let closestDistanceFront = Infinity;
-
-    thumbnailsFront.forEach(thumbFront => {
-      const offsetFront = thumbFront.offsetLeft - containerLeftFront;
-      const distanceFront = Math.abs(offsetFront);
-      if (distanceFront < closestDistanceFront) {
-        closestDistanceFront = distanceFront;
-        closestFront = thumbFront;
-      }
-    });
-
-    if (closestFront && closestFront !== lastActiveFront) {
-      lastActiveFront = closestFront;
-      console.log('自動觸發點擊：', closestFront);
-      closestFront.click(); // 觸發使用者定義的邏輯
-    }
-  }, 100);
-});

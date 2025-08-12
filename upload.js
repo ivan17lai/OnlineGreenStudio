@@ -1,4 +1,3 @@
-const addButton = document.getElementById('addButton');
 const fileInput = document.getElementById('fileInput');
 const imageStrip = document.getElementById('imageStrip');
 const uploadCount = document.getElementById('uploadCount');
@@ -7,6 +6,28 @@ const container = document.querySelector('.image-scroll-container');
 let selectedImage = null;
 let lastActive = null;
 let debounceTimer = null;
+
+// Add default background image
+function addDefaultBackgroundImage() {
+  const defaultSrc = './onlinegreenBackground.png';
+  const img = document.createElement('img');
+  img.className = 'thumbnail';
+  img.src = defaultSrc;
+  img.id = 'defaultBackground'; // Add an ID to easily identify and remove it
+
+  img.addEventListener('click', () => {
+    handleImageClick(img, defaultSrc);
+  });
+
+  img.onload = () => {
+    imageStrip.insertBefore(img, document.getElementById('addButton').nextSibling);
+    updateUploadCount();
+    handleImageClick(img, defaultSrc); // Select it by default
+  };
+}
+
+// Call on load
+addDefaultBackgroundImage();
 
 function handleImageClick(imgElement, src) {
   console.log('選擇的圖片:', src);
@@ -24,12 +45,18 @@ function handleImageClick(imgElement, src) {
   }
 }
 
-addButton.addEventListener('click', () => {
+document.getElementById('addButton').addEventListener('click', () => {
   fileInput.click();
 });
 
 fileInput.addEventListener('change', (event) => {
   const files = Array.from(event.target.files);
+
+  // Remove default image if new images are uploaded
+  const defaultBg = document.getElementById('defaultBackground');
+  if (defaultBg) {
+    defaultBg.remove();
+  }
 
   files.forEach(file => {
     if (file.type.startsWith('image/')) {
@@ -44,7 +71,7 @@ fileInput.addEventListener('change', (event) => {
       });
 
       img.onload = () => {
-        imageStrip.insertBefore(img, addButton.nextSibling);
+        imageStrip.insertBefore(img, document.getElementById('addButton').nextSibling);
         updateUploadCount();
       };
 
@@ -62,29 +89,7 @@ function updateUploadCount() {
   uploadCount.textContent = `(已上傳 ${thumbnails.length} 張)`;
 }
 
-container.addEventListener('scroll', () => {
-  if (debounceTimer) clearTimeout(debounceTimer);
-
-  debounceTimer = setTimeout(() => {
-    const containerLeft = container.scrollLeft;
-
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    let closest = null;
-    let closestDistance = Infinity;
-
-    thumbnails.forEach(thumb => {
-      const offset = thumb.offsetLeft - containerLeft;
-      const distance = Math.abs(offset);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closest = thumb;
-      }
-    });
-
-    if (closest && closest !== lastActive) {
-      lastActive = closest;
-      console.log('自動觸發點擊：', closest);
-      closest.click();
-    }
-  }, 100);
-});
+function updateUploadCount() {
+  const thumbnails = imageStrip.querySelectorAll('img.thumbnail');
+  uploadCount.textContent = `(已上傳 ${thumbnails.length} 張)`;
+}

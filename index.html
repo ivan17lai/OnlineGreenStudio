@@ -17,7 +17,12 @@
 
     <div class="left_bar">
 
-        <h1>Online Green Studio</h1>
+        <div class="header-with-button">
+            <h1>Online Green<br> Studio</h1>
+            <button id="modeToggleButton" class="toolbar-Button">
+                <span class="material-icons">settings</span>
+            </button>
+        </div>
  
         <!-- <h3>
             新增背景圖片 <span id="uploadCount">(已上傳 0 張)</span>
@@ -46,6 +51,17 @@
                 <div id="foregroundUploadCount">(已上傳 0 張)</div>
             </div>
             <!-- <img class="thumbnail" src="./onlinegreenForeground.png"> -->
+            </div>
+        </div>
+
+        <div class="image-scroll-container">
+            <input type="file" id="stickerFileInput" accept="image/*" multiple style="display: none" />
+            <div class="image-strip" id="stickerImageStrip">
+            <div class="thumbnail add-button sticker-thumbnail" id="addStickerButton">
+                <span class="material-icons" style="font-size:26px;cursor:pointer;">add_photo_alternate</span>
+                增加貼紙<br>
+                <div id="stickerUploadCount">(已上傳 0 張)</div>
+            </div>
             </div>
         </div>
 
@@ -80,6 +96,7 @@
     </div>
 
     <div class="main_canvas">
+        <div id="sticker-container"></div>
         <select id="cameraSelect"></select>
         <canvas class="cameraCanvas" id="outputCanvas" style="display: flex;"></canvas>
         <canvas class="cameraCanvas" id="shotedCanvas" style="display: none;"></canvas>
@@ -87,9 +104,11 @@
     </div>
 
     <script src="upload.js"></script>
-    <script src="uploadFront.js"></script>
     <script src="camera.js"></script>
+    <script src="uploadFront.js"></script>
     <script src="shot.js"></script>
+    <script src="sticker.js"></script>
+    <script src="mode.js"></script>
 
 </body>
 </html>
