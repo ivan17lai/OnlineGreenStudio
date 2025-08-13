@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/selfie_segmentation.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
     <link rel="stylesheet" href="./main.css">
 
 
@@ -18,7 +19,10 @@
     <div class="left_bar">
 
         <div class="header-with-button">
-            <h1>Online Green<br> Studio</h1>
+                        <h1>Online Green Studio</h1>
+            <div id="serverStatusIcon" style="display: none; margin-left: 10px;">
+                <span class="material-icons" style="font-size: 24px; color: green;">cloud_done</span>
+            </div>
             <button id="modeToggleButton" class="toolbar-Button">
                 <span class="material-icons">settings</span>
             </button>
@@ -100,6 +104,10 @@
         <select id="cameraSelect"></select>
         <canvas class="cameraCanvas" id="outputCanvas" style="display: flex;"></canvas>
         <canvas class="cameraCanvas" id="shotedCanvas" style="display: none;"></canvas>
+        <div id="qrCodeDisplay" style="display: none; position: absolute; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 100;">
+            <canvas id="qrCodeCanvas"></canvas>
+            <button id="closeQrCode" style="margin-top: 10px;">Close</button>
+        </div>
 
     </div>
 
